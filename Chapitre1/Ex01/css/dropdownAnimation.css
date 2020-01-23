@@ -1,0 +1,28 @@
+@media (min-width: 150px) {
+    .animate {
+      animation-duration: 0.3s;
+      animation-fill-mode: both;      
+    }
+  }
+  
+  @keyframes slideIn {
+    0% {
+      transform: translateY(0.5rem);
+      opacity: 0;
+    }
+    100% {
+      transform:translateY(0.5rem);
+      opacity: 1;
+      
+    }
+    0% {
+      transform: translateY(0rem);
+      opacity: 0;
+      
+    }
+  }
+
+  
+  .slideIn {    
+    animation-name: slideIn;
+  }

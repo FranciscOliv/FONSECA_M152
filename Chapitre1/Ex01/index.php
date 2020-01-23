@@ -8,7 +8,10 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/dropdownAnimation.css">
 
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
@@ -37,41 +40,76 @@
             </div>
         </div>
 
-        <div class="collapse navbar-collapse">
+        <div class="collapse navbar-collapse ml-2" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <!-- HOME BUTTON -->
-                <li class="nav-item ml-3">
+                <li class="nav-item mr-2">
                     <a class="nav-link text-white" href="index.php">
                         <i class="fas fa-home text-white" aria-hidden="true"></i>
                         Home <span class="sr-only">(current)</span></a>
                 </li>
 
                 <!-- POST BUTTON -->
-                <li class="nav-item">
-                <a class="nav-link text-white" href="index.php">
-                        <i class="fas fa-plus text-white" aria-hidden="true"></i>
+                <li class="nav-item mr-2">
+                    <a class="nav-link text-white" href="index.php">
+                        <i class="fas fa-plus text-white font" aria-hidden="true"></i>
                         Post <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown
+
+                <!-- BADGE BUTTON -->
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php">
+                        <b class=" text-blue rounded-pill bg-white p-1">badge</b> <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <i class="fas fas fa-user text-white" aria-hidden="true"></i>
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu dropdown-menu-right animate slideIn mb-2" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="#">Action</a>
                         <a class="dropdown-item" href="#">Another action</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Something else here</a>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </li>
             </ul>
-
         </div>
     </nav>
     <!-- END NAVBAR -->
-    <h1>Hello, world!</h1>
+
+    <!-- MAIN -->
+    <main class="container mt-4">
+        <div class="row">
+            <section class="col bg-dark mr-4"> lol 1
+
+            <div class="card" style="width: 18rem;">
+  <img class="card-img-top" src=".../100px180/?text=Image cap" alt="Card image cap">
+  <div class="card-body">
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div><div class="card" style="width: 18rem;">
+  <img class="card-img-top" src=".../100px180/?text=Image cap" alt="Card image cap">
+  <div class="card-body">
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div><div class="card" style="width: 18rem;">
+  <img class="card-img-top" src=".../100px180/?text=Image cap" alt="Card image cap">
+  <div class="card-body">
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>
+            </section>
+            <section class="col bg-dark"> lol 2</section>
+
+        </div>
+
+
+
+    </main>
+    <!-- END MAIn -->
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
