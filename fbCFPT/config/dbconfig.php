@@ -1,6 +1,6 @@
 <?php
 /**
- * @remark	Remplir correctement les constantes ci-dessous en fonction de votre base de données
+ * @remark	Remplir correctement les constantes ci-dessous en fonction de votre base de donnĂ©es
  */
 
 /*
@@ -10,7 +10,7 @@ define('EDB_DBTYPE', "mysql");
 define('EDB_DBNAME', "m152");
 define('EDB_HOST', "127.0.0.1");
 define('EDB_PORT', "3306");
-define('EDB_USER', "Admin");
-define('EDB_PASS', "Super");
+define('EDB_USER', "admin");
+define('EDB_PASS', "Super2012");
 
 

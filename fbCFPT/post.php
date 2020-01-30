@@ -1,3 +1,7 @@
+<?php 
+require_once "inc/function.php";
+getAll();
+?>
 <!doctype html>
 <html lang="en">
 

@@ -19,7 +19,7 @@
 </head>
 
 <body>
-    <!-- NAVBAR -->
+    <!-- NAVBAR test -->
     <?php
     include_once "inc/nav.inc.php";
     ?>
