@@ -19,43 +19,16 @@
 </head>
 
 <body>
-    <!-- NAVBAR -->
-    <?php
+
+     <!-- NAVBAR -->
+     <?php
     include_once "inc/nav.inc.php";
     ?>
     <!-- END NAVBAR -->
 
     <!-- MAIN -->
     <main class="container mt-4">
-        <div class="row">
-            <!--LEFT SECTION-->
-            <section class="col-sm-4">
-                <div class="card rounded-bottom w-100">
-                    <img src="/img/header.jpg" class="card-img-top" alt="headerImg">
-                    <div class="card-body rounded">
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                </div>
-
-
-            </section>
-
-            <!-- RIGHT SECTION -->
-            <section class="col-sm-8">
-                <div class="card bg-post">
-                    <div class="card-body">
-                        <h1 class="bg-white">Welcome</h1>
-                    </div>
-
-                </div>
-
-
-            </section>
-
-        </div>
-
-
-
+        
     </main>
     <!-- END MAIn -->
 

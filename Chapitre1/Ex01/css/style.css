@@ -1,9 +1,17 @@
 .bg-blue{
     background-color: #3b5998;
 }
-.fas{
-    font-family: 
+.bg-post{
+    background-color:#f5f5f5;    
 }
+body{
+    background-color:#e9eaed;            
+}
+.rounded-bottom, .card-img-top{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
 .text-blue{
     color: #3b5998;
 }
