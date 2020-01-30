@@ -15,7 +15,7 @@
  
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
-    <title>Hello, world!</title>
+    <title>Main Page</title>
 </head>
 
 <body>
