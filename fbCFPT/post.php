@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once "inc/function.php";
 getAll();
 ?>
@@ -24,15 +24,21 @@ getAll();
 
 <body>
 
-     <!-- NAVBAR -->
-     <?php
+    <!-- NAVBAR -->
+    <?php
     include_once "inc/nav.inc.php";
     ?>
     <!-- END NAVBAR -->
 
     <!-- MAIN -->
     <main class="container mt-4">
-        
+        <form>           
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Example textarea</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                
+            </div>
+        </form>
     </main>
     <!-- END MAIn -->
 
