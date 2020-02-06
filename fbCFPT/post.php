@@ -34,6 +34,15 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/upload.php";
     <!-- MAIN -->
     <main class="container mt-4">
 
+        <?php
+        if (!empty($errors)) {
+            foreach ($errors as $value) {
+                echo "<div class='mt-2 alert alert-danger alert-dismissible fade show' role='alert' >" . $value . "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+            }
+            unset($errors);
+        }
+        ?>
+
         <div class="card">
             <div class="card-header">
                 Créer un post
@@ -45,15 +54,15 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/upload.php";
                     </div>
                     <div class="form-group">
                         <div class="custom-file">
-                            <input type="hidden" name="MAX_FILE_SIZE" value="3000000">
-                            <input id="inputFileImage" name="img" type="file" class="custom-file-input" accept="image/x-png,image/gif,image/jpeg">
-                            <label class="custom-file-label" for="inputFileImage">Choose file</label>                            
+                            <input id="inputFileImage" name="inputImg[]" type="file" class="custom-file-input" accept="image/x-png,image/gif,image/jpeg" multiple>
+                            <label class="custom-file-label" for="inputFileImage">Choose file</label>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>
+
 
 
         <!-- <form method="POST" action="/inc/upload.php" enctype="multipart/form-data">
@@ -76,7 +85,14 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/upload.php";
 
     <script type="text/javascript">
         $(document).on('change', '#inputFileImage', function(event) {
-            $(this).next('.custom-file-label').html(event.target.files[0].name);
+
+            var filename = "";
+            for (i = 0; i < this.files.length; i++) {
+                filename += '"' + this.files.item(i).name + '" '
+
+            }
+            $(this).next('.custom-file-label').html(filename);
+
         })
     </script>
 
