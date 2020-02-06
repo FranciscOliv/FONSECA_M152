@@ -1,6 +1,7 @@
 <?php
-require_once "inc/function.php";
-getAll();
+//require_once "inc/function.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/upload.php";
+//getAll();
 ?>
 <!doctype html>
 <html lang="en">
@@ -32,22 +33,53 @@ getAll();
 
     <!-- MAIN -->
     <main class="container mt-4">
-        <form>           
-            <div class="form-group">
-                <label for="exampleFormControlTextarea1">Example textarea</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                
+
+        <div class="card">
+            <div class="card-header">
+                Créer un post
             </div>
-        </form>
+            <div class="card-body">
+                <form method="POST" action="#" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <textarea class="form-control" id="postTextarea" rows="3" placeholder="Write something..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-file">
+                            <input type="hidden" name="MAX_FILE_SIZE" value="3000000">
+                            <input id="inputFileImage" name="img" type="file" class="custom-file-input" accept="image/x-png,image/gif,image/jpeg">
+                            <label class="custom-file-label" for="inputFileImage">Choose file</label>                            
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+
+
+        <!-- <form method="POST" action="/inc/upload.php" enctype="multipart/form-data">
+            
+            <input type="hidden" name="MAX_FILE_SIZE" value="100000">
+            Fichier : <input type="file" name="avatar">
+            <input type="submit" name="envoyer" value="Envoyer le fichier">
+        </form> -->
     </main>
     <!-- END MAIn -->
 
 
     <!-- Optional JavaScript -->
+
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+    <script type="text/javascript">
+        $(document).on('change', '#inputFileImage', function(event) {
+            $(this).next('.custom-file-label').html(event.target.files[0].name);
+        })
+    </script>
+
 </body>
 
 </html>
