@@ -1,7 +1,7 @@
 <?php
-//require_once "inc/function.php";
+//phpinfo();
 require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/upload.php";
-//getAll();
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -50,7 +50,7 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/upload.php";
             <div class="card-body">
                 <form method="POST" action="#" enctype="multipart/form-data">
                     <div class="form-group">
-                        <textarea class="form-control" id="postTextarea" rows="3" placeholder="Write something..."></textarea>
+                        <textarea class="form-control" id="postTextarea" name="postText" rows="3" placeholder="Write something..."></textarea>
                     </div>
                     <div class="form-group">
                         <div class="custom-file">
@@ -58,7 +58,7 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/upload.php";
                             <label class="custom-file-label" for="inputFileImage">Choose file</label>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" name="createPost" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>

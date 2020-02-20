@@ -1,40 +1,106 @@
 <?php
-if (isset($_FILES) && is_array($_FILES) && count($_FILES) > 0) {
-    //if (isset($_FILES['inputImg[]'])){
+require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/dbconnect.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/security.inc.php";
 
-    $files = $_FILES['inputImg'];
+date_default_timezone_set('Europe/Zurich');
 
-    //70mo
-    $fileSizeSum = 0;
-    $maxSizeAllFiles = 70000000;
+if (filter_has_var(INPUT_POST, 'createPost')) {
 
-    for ($i = 0; $i < count($files['name']); $i++) {
-        $errors = array();
-        $folder = $_SERVER["DOCUMENT_ROOT"] . '/upload/';
-        $maxSizePerFile = 3000000;
-        $fileSize = filesize($files['tmp_name'][$i]);
-        $fileSizeSum += $fileSize;
-        $extensions = array('.png', '.gif', '.jpg', '.jpeg');
-        $extension = strrchr($files['name'][$i], '.');
-        $files['name'][$i] = uniqid() . $extension;
-        $file = basename($files['name'][$i]);
-        //Début des vérifications de sécurité...
-        if (!in_array($extension, $extensions)) //Si l'extension n'est pas dans le tableau
-        {
-            array_push($errors, 'Vous devez uploader un fichier de type png, gif, jpg, jpeg, txt ou doc...');
-        }
-        if ($fileSize > $maxSizePerFile or $fileSizeSum > $maxSizeAllFiles) {
-            array_push($errors, 'Le(s) fichier(s) est trop grand(s)...');
-        }
-        if (!isset($errors)) //S'il n'y a pas d'erreur, on upload
-        {
-            //On formate le nom du fichier ici...
-            $file = strtr($file, 'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ', 'AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
-            $file = preg_replace('/([^.a-z0-9]+)/i', '-', $file);
-            if (!move_uploaded_file($files['tmp_name'][$i], $folder . $file)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
+    //Variables locales
+    $postText = "";
+    $errors = array();
+    $containsMedia = false;
+    $mediaInfo = array();
+    $okMessage = false;
+
+    //Entrees par l'utilisateur
+    $postText = filter_input(INPUT_POST, 'postText', FILTER_SANITIZE_STRING);
+
+
+    if (empty($postText)) {
+        array_push($errors, "The post must contain some text");
+    }
+
+
+    if (isset($_FILES) && is_array($_FILES) && count($_FILES) > 0 && empty($errors)) {
+
+        $files = $_FILES['inputImg'];
+
+        //70mo
+        $fileSizeSum = 0;
+        $maxSizeAllFiles = 70000000;
+
+        for ($i = 0; $i < count($files['name']); $i++) {
+            $folder = $_SERVER["DOCUMENT_ROOT"] . '/upload/';
+            $maxSizePerFile = 3000000;
+            
+            $extensions = array('.png', '.gif', '.jpg', '.jpeg');
+            $imageMimeTypes = array('image/png','image/gif','image/jpeg');
+            
+            
+            $fileSize = filesize($files['tmp_name'][$i]);
+            $fileSizeSum += $fileSize;            
+            $extension = strrchr($files['name'][$i], '.');
+            $imageFileTest = mime_content_type($files['tmp_name'][$i]);
+            $files['name'][$i] = uniqid() . $extension;
+            $fileName = basename($files['name'][$i]);
+
+            //Début des vérifications de sécurité...
+            if (!in_array($extension, $extensions) or !in_array($imageFileTest, $imageMimeTypes)) //Si l'extension n'est pas dans le tableau
             {
-                array_push($errors, 'Echec de l\'upload !');
+                array_push($errors, 'Vous devez uploader un fichier de type png, gif, jpg, jpeg, txt ou doc...');
             }
+            if ($fileSize > $maxSizePerFile or $fileSizeSum > $maxSizeAllFiles) {
+                array_push($errors, 'Le(s) fichier(s) est trop grand(s)...');
+            }
+            if (empty($errors)) //S'il n'y a pas d'erreur, on upload
+            {
+                //On formate le nom du fichier ici...
+                $fileName = strtr($fileName, 'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ', 'AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
+                $fileName = preg_replace('/([^.a-z0-9]+)/i', '-', $fileName);
+                if (!move_uploaded_file($files['tmp_name'][$i], $folder . $fileName)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
+                {
+                    array_push($errors, 'Echec de l\'upload !');
+                } else {
+                    $currentMediaInfo = array(
+                        'fileName' => $fileName,
+                        'fileExtension' => str_replace('.', '', $extension)
+                    );
+                    array_push($mediaInfo, $currentMediaInfo);
+                    $containsMedia = true;
+                }
+            }
+        }
+    }
+
+    if (empty($errors)) {
+
+        try {
+            EDatabase::beginTransaction();
+
+            $date =  date("Y-m-d H:i:s", time());
+
+            //Insert in post table
+            $s = "INSERT INTO `m152`.`post` (`commentaire`, `creationDate`) VALUES (:postText, :creationDate)";
+            $statement = EDatabase::prepare($s);
+            $statement->execute(array(':postText' => $postText, ':creationDate' => $date));
+
+            $postId = EDatabase::lastInsertId();
+
+            //Insert in media table
+            if ($containsMedia) {
+                foreach ($mediaInfo as $arr) {
+                    $s = "INSERT INTO `m152`.`media` (`typeMedia`, `nomMedia`, `creationDate`, `idPost`) VALUES (:mediaType, :mediaName , :creationDate, :postId);";
+                    $statement = EDatabase::prepare($s);
+                    $statement->execute(array(':mediaType' => $arr['fileExtension'], ':mediaName' => $arr['fileName'], ':creationDate' => $date, ':postId' => $postId));
+                }
+            }
+
+            EDatabase::commit();
+            header("Location: index.php");
+        } catch (Exception $e) {
+            EDatabase::rollBack();
+            return $e;
         }
     }
 }
