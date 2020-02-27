@@ -22,7 +22,7 @@ if (filter_has_var(INPUT_POST, 'createPost')) {
     }
 
 
-    if (isset($_FILES) && is_array($_FILES) && count($_FILES) > 0 && empty($errors)) {
+    if (isset($_FILES['inputImg']) && count($_FILES['inputImg']) > 0 && empty($errors)) {
 
         $files = $_FILES['inputImg'];
 

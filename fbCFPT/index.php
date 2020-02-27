@@ -1,3 +1,9 @@
+<?php
+require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/function.php";
+
+$postData =  getAllPost();
+
+?>
 <!doctype html>
 <html lang="en">
 
@@ -12,7 +18,8 @@
 
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/dropdownAnimation.css">
- 
+    <link rel="stylesheet" href="./css/blurredBackground.css">
+
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
     <title>Main Page</title>
@@ -29,7 +36,7 @@
     <main class="container mt-4">
         <div class="row">
             <!--LEFT SECTION-->
-            <section class="col-sm-4">
+            <section class="col-sm-4 mb-2">
                 <div class="card rounded-bottom w-100">
                     <img src="/img/header.jpg" class="card-img-top" alt="headerImg">
                     <div class="card-body rounded">
@@ -40,12 +47,75 @@
 
             <!-- RIGHT SECTION -->
             <section class="col-sm-8">
+
+                <!-- POST EXAMPLE -->
                 <div class="card bg-post">
                     <div class="card-body">
                         <h1 class="bg-white">Welcome</h1>
                     </div>
 
                 </div>
+
+                <?php
+                // POST SECTION
+                foreach ($postData as $post) {
+                    $mediaData = getMediaByPostId($post['idPost']);
+                ?>
+                    <div class="card mb-2 bg-post">
+                        <?php
+                        if (count($mediaData) > 1) {
+                        ?>
+
+                            <div id="carouselExampleIndicators" class="carousel slide card-img-top" data-ride="carousel">
+                                <ol class="carousel-indicators">
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                                </ol>
+
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active image_blurred_wrapper">
+                                        <div class="image_blurred" style="background-image: url('/img/header.jpg');">
+                                        </div>
+                                        <img alt="image" src="/img/header.jpg" />
+                                    </div>
+                                    <div class="carousel-item  image_blurred_wrapper">
+                                        <div class="image_blurred" style="background-image: url('https://www.laliberte.ch/media/image/33/normal/20191123121850805.jpg');">
+                                        </div>
+                                        <img alt="image" src="https://www.laliberte.ch/media/image/33/normal/20191123121850805.jpg" />
+                                    </div>
+                                    <div class="carousel-item  image_blurred_wrapper">
+                                        <div class="image_blurred" style="background-image: url('https://www.laliberte.ch/media/image/33/normal/20191123121850805.jpg');">
+                                        </div>
+                                        <img alt="image" src="https://www.laliberte.ch/media/image/33/normal/20191123121850805.jpg" />
+                                    </div>
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        <?php } else { ?>
+                            <img class="card-img-top imgPost" src="/upload/<?= $mediaData[0]['nomMedia'] ?>" alt="Card image cap">
+                        <?php } ?>
+                        <div class="card-body">                            
+                            <h5 class="card-title"><?= $post['commentaire'] ?></h5>
+                        </div>
+                    </div>
+
+                <?php
+                }
+                ?>
+
+
+
+
+
+
             </section>
         </div>
 

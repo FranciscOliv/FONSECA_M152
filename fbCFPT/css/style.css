@@ -1,20 +1,54 @@
-.bg-blue{
+.bg-blue {
     background-color: #3b5998;
 }
-.bg-post{
-    background-color:#f5f5f5;    
+
+.bg-post {
+    background-color: #f5f5f5;
 }
-body{
-    background-color:#e9eaed;            
+
+body {
+    background-color: #e9eaed;
 }
-.rounded-bottom, .card-img-top{
+
+.rounded-bottom, .card-img-top {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
 
-.text-blue{
+.text-blue {
     color: #3b5998;
 }
-#logoImg{
-    color:white;
+
+#logoImg {
+    color: white;
+}
+
+.imgPost {
+    max-height: 400px;
+    width: unset;
+    margin: 0 auto;
+    
+}
+
+.carousel-inner>.carousel-item>img {
+    position: relative;
+    max-width: 100%;
+    margin: 0 auto;
+    display: block;
+}
+
+/* Inspiration https://codepen.io/mcloud79/pen/EMEZPG */
+
+.image_blurred_wrapper .image_blurred {
+    background-repeat: no-repeat;
+    background-size: 120%;
+    background-position: center center;
+    position: absolute;
+    top: -10px;
+    left: 0;
+    bottom: -10px;
+    right: 0;
+    filter: blur(24px);
+    -webkit-filter: blur(24px);
+    opacity: 0.75;
 }
