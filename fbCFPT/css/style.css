@@ -23,21 +23,22 @@ body {
     color: white;
 }
 
-.imgPost {
-    max-height: 400px;
-    width: unset;
-    margin: 0 auto;
-    
-}
 
-.carousel-inner>.carousel-item>img {
+
+.imgPost{
     position: relative;
     max-width: 100%;
+    max-height: 400px;
+    object-fit: scale-down; 
     margin: 0 auto;
     display: block;
 }
 
 /* Inspiration https://codepen.io/mcloud79/pen/EMEZPG */
+.image_blurred_wrapper{
+    position: relative;
+    overflow: hidden;
+}
 
 .image_blurred_wrapper .image_blurred {
     background-repeat: no-repeat;

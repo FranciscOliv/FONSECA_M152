@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/dbconnect.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/security.inc.php";
+require_once dirname(__FILE__) . "/dbconnect.php";
+require_once dirname(__FILE__) . "/security.inc.php";
 
 date_default_timezone_set('Europe/Zurich');
 
@@ -21,8 +21,13 @@ if (filter_has_var(INPUT_POST, 'createPost')) {
         array_push($errors, "The post must contain some text");
     }
 
+    // if (empty($postText)) {
+    //     array_push($errors, "The post must contain some text");
+    // }
 
-    if (isset($_FILES['inputImg']) && count($_FILES['inputImg']) > 0 && empty($errors)) {
+
+
+    if (isset($_FILES['inputImg']) && $_FILES['inputImg']['error'][0] != 4 && empty($errors)) {
 
         $files = $_FILES['inputImg'];
 
@@ -33,13 +38,13 @@ if (filter_has_var(INPUT_POST, 'createPost')) {
         for ($i = 0; $i < count($files['name']); $i++) {
             $folder = $_SERVER["DOCUMENT_ROOT"] . '/upload/';
             $maxSizePerFile = 3000000;
-            
+
             $extensions = array('.png', '.gif', '.jpg', '.jpeg');
-            $imageMimeTypes = array('image/png','image/gif','image/jpeg');
-            
-            
+            $imageMimeTypes = array('image/png', 'image/gif', 'image/jpeg');
+
+
             $fileSize = filesize($files['tmp_name'][$i]);
-            $fileSizeSum += $fileSize;            
+            $fileSizeSum += $fileSize;
             $extension = strrchr($files['name'][$i], '.');
             $imageFileTest = mime_content_type($files['tmp_name'][$i]);
             $files['name'][$i] = uniqid() . $extension;

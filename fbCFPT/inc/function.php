@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/dbconnect.php";
+require_once dirname(__FILE__) . "/dbconnect.php";
 
 
 function getAllPost()
