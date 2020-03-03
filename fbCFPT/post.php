@@ -45,7 +45,7 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/upload.php";
 
         <div class="card">
             <div class="card-header">
-                Créer un post
+                Create post
             </div>
             <div class="card-body">
                 <form method="POST" action="#" enctype="multipart/form-data">

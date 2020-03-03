@@ -21,12 +21,6 @@ if (filter_has_var(INPUT_POST, 'createPost')) {
         array_push($errors, "The post must contain some text");
     }
 
-    // if (empty($postText)) {
-    //     array_push($errors, "The post must contain some text");
-    // }
-
-
-
     if (isset($_FILES['inputImg']) && $_FILES['inputImg']['error'][0] != 4 && empty($errors)) {
 
         $files = $_FILES['inputImg'];
@@ -76,6 +70,8 @@ if (filter_has_var(INPUT_POST, 'createPost')) {
                 }
             }
         }
+    } else {
+        array_push($errors, "The post must contain some media");
     }
 
     if (empty($errors)) {

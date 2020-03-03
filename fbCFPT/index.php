@@ -48,83 +48,78 @@ $postData =  getAllPost();
             <!-- RIGHT SECTION -->
             <section class="col-sm-8 mb-2">
 
+                <!-- POST SECTION -->
+                <?php
+                if (count($postData) > 0) {
+                    foreach ($postData as $post) {
+                        $mediaData = getMediaByPostId($post['idPost']);
+                ?>
+                        <div class="card mb-2 bg-post">
+                            <!-- MULTIPLE MEDIA POST -->
+                            <?php
+                            if (count($mediaData) > 1) {
+                            ?>
+
+                                <div id="carouselExampleIndicators" class="carousel slide card-img-top" data-ride="carousel">
+                                    <ol class="carousel-indicators">
+                                        <!-- POST IMAGE LIST -->
+                                        <?php
+                                        for ($i = 0; $i < count($mediaData); $i++) {
+                                            if ($i == 0) {
+                                                echo '<li data-target="#carouselExampleIndicators" data-slide-to="' . $i . '" class="active"></li>';
+                                            } else {
+                                                echo '<li data-target="#carouselExampleIndicators" data-slide-to="' . $i . '"></li>';
+                                            }
+                                        }
+                                        ?>
+                                    </ol>
+                                    <div class="carousel-inner">
+                                        <!-- MULTIPLE IMAGE POST -->
+                                        <?php
+                                        for ($i = 0; $i < count($mediaData); $i++) {
+                                            if ($i == 0) {
+                                                echo '<div class="carousel-item active image_blurred_wrapper">';
+                                            } else {
+                                                echo '<div class="carousel-item image_blurred_wrapper">';
+                                            }
+                                            echo ' <div class="image_blurred" style="background-image: url(\'/upload/' . $mediaData[$i]['nomMedia'] . '\');"></div>';
+                                            echo '<img alt="image" class="imgPost" src="/upload/' . $mediaData[$i]['nomMedia'] . '" /></div>';
+                                        }
+                                        ?>
+                                    </div>
+                                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </div>
+                            <?php } else { ?>
+                                <!-- SINGLE MEDIA POST -->
+                                <div class="image_blurred_wrapper">
+                                    <div class="image_blurred" style="background-image: url('/upload/<?= $mediaData[0]['nomMedia'] ?>');">
+                                    </div>
+                                    <img class="card-img-top imgPost" src="/upload/<?= $mediaData[0]['nomMedia'] ?>" alt="Card image cap">
+                                </div>
+                            <?php } ?>
+                            <div class="card-body">
+                                <h5 class="card-title"><?= $post['commentaire'] ?></h5>
+                            </div>
+                        </div>
+
+                <?php
+                    }
+                }
+                ?>
                 <!-- POST EXAMPLE -->
-                <div class="card bg-post mb-2">
+                <div class="card bg-post">
                     <div class="card-body">
-                        <h1 class="bg-white">Welcome</h1>
+                        <h1>Welcome</h1>
                     </div>
 
                 </div>
-
-                <?php
-                // POST SECTION
-                foreach ($postData as $post) {
-                    $mediaData = getMediaByPostId($post['idPost']);
-                ?>
-                    <div class="card mb-2 bg-post">
-                        <?php
-                        if (count($mediaData) > 1) {
-                        ?>
-
-                            <div id="carouselExampleIndicators" class="carousel slide card-img-top" data-ride="carousel">
-                                <ol class="carousel-indicators">
-                                    <?php
-                                    for ($i = 0; $i < count($mediaData); $i++) {
-                                        if ($i == 0) {
-                                            echo '<li data-target="#carouselExampleIndicators" data-slide-to="' . $i . '" class="active"></li>';
-                                        } else {
-                                            echo '<li data-target="#carouselExampleIndicators" data-slide-to="' . $i . '"></li>';
-                                        }
-                                    }
-                                    ?>
-
-
-                                </ol>
-
-                                <div class="carousel-inner">
-
-                                    <?php
-                                    for ($i = 0; $i < count($mediaData); $i++) {
-                                        if ($i == 0) {
-                                            echo '<div class="carousel-item active image_blurred_wrapper">';
-                                        } else {
-                                            echo '<div class="carousel-item image_blurred_wrapper">';
-                                        }
-                                        echo ' <div class="image_blurred" style="background-image: url(\'/upload/' . $mediaData[$i]['nomMedia'] . '\');"></div>';
-                                        echo '<img alt="image" class="imgPost" src="/upload/' . $mediaData[$i]['nomMedia'] . '" /></div>';
-                                    }
-                                    ?>
-                                </div>
-                                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </div>
-                        <?php } else { ?>
-                            <div class="image_blurred_wrapper">
-                                <div class="image_blurred" style="background-image: url('/upload/<?= $mediaData[0]['nomMedia'] ?>');">
-                                </div>
-                                <img class="card-img-top imgPost" src="/upload/<?= $mediaData[0]['nomMedia'] ?>" alt="Card image cap">
-                            </div>
-                        <?php } ?>
-                        <div class="card-body">
-                            <h5 class="card-title"><?= $post['commentaire'] ?></h5>
-                        </div>
-                    </div>
-
-                <?php
-                }
-                ?>
-
-
-
-
-
-
             </section>
         </div>
 
