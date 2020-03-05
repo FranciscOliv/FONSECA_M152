@@ -30,6 +30,18 @@ function getMediaByPostId($id)
     }
 }
 
+function deletePostById($id){
+    try {
+        $s = "DELETE FROM `m152`.`post` WHERE (`idPost` = :id);";
+        $statement = EDatabase::prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $statement->execute(array(':id' => $id));        
+
+        return true;
+    } catch (Exception $e) {
+        return false;
+    }
+}
+
 // function insertPost()
 // {
 //     try {
