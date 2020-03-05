@@ -202,6 +202,7 @@ $postData =  getAllPost();
                     switch (data.ReturnCode) {
                         case 0: // C'est tout bon
                             alert(data.Message);
+                            buttonClicked.closest('.card').remove();
                             // window.location = "./done.html";
                             break;
                         case 1: // Paramètres invalides
