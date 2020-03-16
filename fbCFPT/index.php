@@ -162,7 +162,7 @@ $postData =  getAllPost();
 <!-- POST EXAMPLE -->
 <div class="card bg-post">
     <video class="videoPost" controls>
-        <source src="/upload/twitter_20200124_010038.mp4" type="video/mp4">
+        <source src="/upload/mario.mp4" type="video/mp4">
         Your browser does not support HTML5 video.
     </video>
     <div class="card-body">
