@@ -36,7 +36,6 @@ if (filter_has_var(INPUT_POST, 'createPost')) {
             $extensions = array('.png', '.gif', '.jpg', '.jpeg');
             $imageMimeTypes = array('image/png', 'image/gif', 'image/jpeg');
 
-
             $fileSize = filesize($files['tmp_name'][$i]);
             $fileSizeSum += $fileSize;
             $extension = strrchr($files['name'][$i], '.');
@@ -63,7 +62,7 @@ if (filter_has_var(INPUT_POST, 'createPost')) {
                 } else {
                     $currentMediaInfo = array(
                         'fileName' => $fileName,
-                        'fileExtension' => str_replace('.', '', $extension)
+                        'fileType' => $files['type'][$i]
                     );
                     array_push($mediaInfo, $currentMediaInfo);
                     $containsMedia = true;
@@ -93,7 +92,7 @@ if (filter_has_var(INPUT_POST, 'createPost')) {
                 foreach ($mediaInfo as $arr) {
                     $s = "INSERT INTO `m152`.`media` (`typeMedia`, `nomMedia`, `creationDate`, `idPost`) VALUES (:mediaType, :mediaName , :creationDate, :postId);";
                     $statement = EDatabase::prepare($s);
-                    $statement->execute(array(':mediaType' => $arr['fileExtension'], ':mediaName' => $arr['fileName'], ':creationDate' => $date, ':postId' => $postId));
+                    $statement->execute(array(':mediaType' => $arr['fileType'], ':mediaName' => $arr['fileName'], ':creationDate' => $date, ':postId' => $postId));
                 }
             }
 

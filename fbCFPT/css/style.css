@@ -23,13 +23,11 @@ body {
     color: white;
 }
 
-
-
 .imgPost{
     position: relative;
     max-width: 100%;
     max-height: 400px;
-    object-fit: scale-down; 
+    object-fit: contain; 
     margin: 0 auto;
     display: block;
 }
@@ -52,4 +50,15 @@ body {
     filter: blur(24px);
     -webkit-filter: blur(24px);
     opacity: 0.75;
+}
+
+
+
+.videoPost{
+    position: relative;
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: scale-down; 
+    
+    display: block;
 }

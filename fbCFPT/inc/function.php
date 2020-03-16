@@ -29,18 +29,57 @@ function getMediaByPostId($id)
         return $e;
     }
 }
-
-function deletePostById($id){
+function getMediaNameByPostId($id)
+{
     try {
-        $s = "DELETE FROM `m152`.`post` WHERE (`idPost` = :id);";
+        $s = "SELECT nomMedia FROM media WHERE idPost = :id";
         $statement = EDatabase::prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $statement->execute(array(':id' => $id));        
+        $statement->execute(array(':id' => $id));
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+        return $result;
+    } catch (Exception $e) {
+        return $e;
+    }
+}
+
+
+function unlinkMediaById($id)
+{
+    try {
+        $mediaNames = getMediaNameByPostId($id);
+
+        for ($i = 0; $i < count($mediaNames); $i++) {
+            $filePath = "../upload/" . $mediaNames[$i]['nomMedia'];
+            if (file_exists($filePath))
+                unlink($filePath);
+        }
         return true;
     } catch (Exception $e) {
         return false;
     }
 }
+
+function deletePostById($id)
+{
+    try {
+
+        if (!unlinkMediaById($id)) {
+            return false;
+        }
+
+        $s = "DELETE FROM `m152`.`post` WHERE (`idPost` = :id);";
+        $statement = EDatabase::prepare($s, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $statement->execute(array(':id' => $id));
+
+        return true;
+    } catch (Exception $e) {
+
+        return false;
+    }
+}
+
+
 
 // function insertPost()
 // {
@@ -54,5 +93,3 @@ function deletePostById($id){
 //         return $e;
 //     }
 // }
-
-

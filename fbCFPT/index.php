@@ -17,7 +17,7 @@ $postData =  getAllPost();
 
 
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/dropdownAnimation.css">    
+    <link rel="stylesheet" href="./css/dropdownAnimation.css">
 
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
@@ -35,7 +35,7 @@ $postData =  getAllPost();
     <main class="container mt-4">
         <div class="row">
             <!--LEFT SECTION-->
-            <section class="col-sm-4 mb-2">
+            <section id="leftSection" class="col-sm-4 mb-2">
                 <div class="card rounded-bottom w-100">
                     <img src="/img/header.jpg" class="card-img-top" alt="headerImg">
                     <div class="card-body rounded">
@@ -45,7 +45,7 @@ $postData =  getAllPost();
             </section>
 
             <!-- RIGHT SECTION -->
-            <section class="col-sm-8 mb-2">
+            <section id="rightSection" class="col-sm-8 mb-2">
 
 
 
@@ -82,16 +82,29 @@ $postData =  getAllPost();
 
                             // MULTIPLE IMAGE POST
 
+
                             for ($i = 0; $i < count($mediaData); $i++) {
-                                if ($i == 0) {
-                                    echo '<div class="carousel-item active image_blurred_wrapper">';
-                                } else {
-                                    echo '<div class="carousel-item image_blurred_wrapper">';
+                                $activeBool = "";
+                                $classAddOn = "";
+
+                                if ($i == 0) $activeBool = "active";
+
+
+                                if (strpos($mediaData[$i]['typeMedia'], 'image/') !== false) {
+                                    $classAddOn = "image_blurred_wrapper";
                                 }
+
+                                // (strpos($mediaData[$i]['type'], "image")) ? $classAddOn = "image_blurred_wrapper";
+
+                                echo '<div class="carousel-item ' . $activeBool . ' ' . $classAddOn . '">';
+
+
+
                                 echo <<<EOT
                                     <div class="image_blurred" style="background-image: url('/upload/{$mediaData[$i]['nomMedia']}')"></div>                               
-                                    <img alt="image" class="imgPost" src="/upload/{$mediaData[$i]['nomMedia']}" /></div>
+                                    <img alt="image" class="imgPost" src="/upload/{$mediaData[$i]['nomMedia']}" />                                    
                                 EOT;
+                                echo "</div>";
                             }
                 ?>
         </div>
@@ -148,6 +161,10 @@ $postData =  getAllPost();
 ?>
 <!-- POST EXAMPLE -->
 <div class="card bg-post">
+    <video class="videoPost" controls>
+        <source src="/upload/twitter_20200124_010038.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
     <div class="card-body">
         <h1>Welcome</h1>
         test
@@ -187,13 +204,14 @@ $postData =  getAllPost();
 
             var buttonClicked = $(e.target);
             var id = buttonClicked.attr('name');
+            var message = "";
+            var alertType = "";
 
             $.ajax({
                 method: 'POST', // La méthode utilisée pour passer les données en paramètres
                 url: '/inc/deletePost.php', // Le fichier appelé sur le serveur
                 data: {
-                    'id': id,
-
+                    'id': id
                 }, // Les paramètres
                 dataType: 'json', // Le type de retour des données
 
@@ -201,19 +219,32 @@ $postData =  getAllPost();
                 success: function(data) {
                     switch (data.ReturnCode) {
                         case 0: // C'est tout bon
-                            alert(data.Message);
+                            message = data.Message;
+                            alertType = "success";
                             buttonClicked.closest('.card').remove();
                             // window.location = "./done.html";
                             break;
                         case 1: // Paramètres invalides
                             // On affiche le message d'erreur
                             // et on le cache automatiquement après 3 secondes
-                            alert(data.Message);
+                            alertType = "danger";
+                            message = data.Message;
                             break;
                         case 2: // User et/ou mot de passe invalide
-                            alert(data.Message);
+                            alertType = "danger";
+                            message = data.Message;
                             break;
                     }
+                    $alertPrepare = `
+                    <div class="alert alert-` + alertType + ` alert-dismissible fade show mb-2" role="alert">` + message + `                      
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>  
+                        </button>
+                    </div>`
+
+                    $('#rightSection').prepend($alertPrepare);
+
+
                 }, //#end success
                 // error: Lorsqu'on a une erreur provenant de l'appel ajax
                 // Ce n'est pas les erreurs qui proviennent du retour
