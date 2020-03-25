@@ -54,7 +54,7 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/inc/upload.php";
                     </div>
                     <div class="form-group">
                         <div class="custom-file">
-                            <input id="inputFileImage" name="inputImg[]" type="file" class="custom-file-input" accept="image/x-png,image/gif,image/jpeg" multiple>
+                            <input id="inputFileImage" name="inputFile[]" type="file" class="custom-file-input" accept="image/x-png,image/gif,image/jpeg,video/mp4,audio/mp3" multiple>
                             <label class="custom-file-label" for="inputFileImage">Choose file</label>
                         </div>
                     </div>

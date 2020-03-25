@@ -34,6 +34,7 @@ $postData =  getAllPost();
     <!-- MAIN -->
     <main class="container mt-4">
         <div class="row">
+
             <!--LEFT SECTION-->
             <section id="leftSection" class="col-sm-4 mb-2">
                 <div class="card rounded-bottom w-100">
@@ -46,139 +47,106 @@ $postData =  getAllPost();
 
             <!-- RIGHT SECTION -->
             <section id="rightSection" class="col-sm-8 mb-2">
-
-
-
                 <!-- POST SECTION -->
                 <?php
                 if (count($postData) > 0) {
-                    foreach ($postData as $post) {
-                        $mediaData = getMediaByPostId($post['idPost']);
+                    foreach ($postData as $post) { ?>
 
-                        echo <<<EOT
+                        <!-- CARD START -->
                         <div class="card mb-2 bg-post">
-                        EOT;
-                        //MULTIPLE MEDIA POST
-                        if (count($mediaData) > 1) {
 
-                            echo <<<EOT
-                                <div id="carouselExampleIndicators" class="carousel slide card-img-top" data-ride="carousel">
-                                <ol class="carousel-indicators">                                        
-                                EOT;
-
-                            // POST IMAGE LIST
-                            for ($i = 0; $i < count($mediaData); $i++) {
-                                if ($i == 0) {
-                                    echo '<li data-target="#carouselExampleIndicators" data-slide-to="' . $i . '" class="active"></li>';
-                                } else {
-                                    echo '<li data-target="#carouselExampleIndicators" data-slide-to="' . $i . '"></li>';
-                                }
-                            }
-
-                            echo <<<EOT
-                                </ol>
-                                <div class="carousel-inner">
-                                EOT;
-
-                            // MULTIPLE IMAGE POST
+                            <?php
+                            //CARD MEDIA
+                            $mediaData = getMediaByPostId($post['idPost']);
 
 
-                            for ($i = 0; $i < count($mediaData); $i++) {
-                                $activeBool = "";
-                                $classAddOn = "";
+                            //MULTIPLE MEDIA POST
+                            if (count($mediaData) > 1) {
+                                require "./inc/multiMediaPost.inc.php";
+                            } else {  // SINGLE MEDIA POST
+                                require "./inc/singleMediaPost.inc.php";
+                            } ?>
 
-                                if ($i == 0) $activeBool = "active";
+                            <!-- CARD BODY  -->
+                            <hr />
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <?= $post['commentaire'] ?>
+                                    <div class="dropdown float-right">
+                                        <button type="button" class="btn p-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
 
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#">Modifier</a>
+                                            <a name="<?= $post['idPost'] ?>" class="dropdown-item btnDeletePost" href="#">Supprimer</a>
+                                        </div>
+                                    </div>
+                                </h4>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        <?php
+                                        if (!empty($post['modificationDate'])) {
+                                            echo "Modifié le " . $post['modificationDate'];
+                                        } else {
+                                            $creationDate = date("d.m.Y", strtotime($post['creationDate']));
+                                            $creationHour = date("H:i", strtotime($post['creationDate']));
+                                            echo "Posté le " . $creationDate . " à " . $creationHour;
+                                        }
+                                        ?>
 
-                                if (strpos($mediaData[$i]['typeMedia'], 'image/') !== false) {
-                                    $classAddOn = "image_blurred_wrapper";
-                                }
+                                    </small>
+                                </p>
 
-                                // (strpos($mediaData[$i]['type'], "image")) ? $classAddOn = "image_blurred_wrapper";
+                            </div>
+                        </div>
 
-                                echo '<div class="carousel-item ' . $activeBool . ' ' . $classAddOn . '">';
-
-
-
-                                echo <<<EOT
-                                    <div class="image_blurred" style="background-image: url('/upload/{$mediaData[$i]['nomMedia']}')"></div>                               
-                                    <img alt="image" class="imgPost" src="/upload/{$mediaData[$i]['nomMedia']}" />                                    
-                                EOT;
-                                echo "</div>";
-                            }
-                ?>
-        </div>
-        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-        </div>
-    <?php } else { ?>
-        <!-- SINGLE MEDIA POST -->
-        <div class="image_blurred_wrapper">
-            <div class="image_blurred" style="background-image: url('/upload/<?= $mediaData[0]['nomMedia'] ?>');">
-            </div>
-            <img class="card-img-top imgPost" src="/upload/<?= $mediaData[0]['nomMedia'] ?>" alt="Card image cap">
-        </div>
-    <?php } ?>
-    <div class="card-body">
-        <h5 class="card-title">
-            <?= $post['commentaire'] ?>
-            <div class="dropdown float-right">
-                <button type="button" class="btn p-1" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
-
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Modifier</a>
-                    <a name="<?= $post['idPost'] ?>" class="dropdown-item btnDeletePost" href="#">Supprimer</a>
-                </div>
-            </div>
-        </h5>
-        <p class="card-text">
-            <small class="text-muted">
                 <?php
-                        if (!empty($post['modificationDate'])) {
-                            echo "Modifié le " . $post['modificationDate'];
-                        } else {
-                            $creationDate = date("d.m.Y", strtotime($post['creationDate']));
-                            $creationHour = date("H:i", strtotime($post['creationDate']));
-                            echo "Posté le " . $creationDate . " à " . $creationHour;
-                        }
-                ?>
-
-            </small>
-        </p>
-
-    </div>
-    </div>
-
-<?php
                     }
                 }
-?>
-<!-- POST EXAMPLE -->
-<div class="card bg-post">
-    <video class="videoPost" controls>
-        <source src="/upload/mario.mp4" type="video/mp4">
-        Your browser does not support HTML5 video.
-    </video>
-    <div class="card-body">
-        <h1>Welcome</h1>
-        test
+                ?>
+
+                <div class="card bg-post mb-2">
+                    <div class="p-1 bg-audio">
+                        <audio class="audioPost w-100" controls>
+                            <source src="/upload/marioSound.mp3" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+
+                    <hr />
+                    <div class="card-body">
+                        <h3>Audio Example</h3>
+                    </div>
+                </div>
+
+                <!-- POST EXAMPLE -->
+                <div class="card bg-post mb-2">
+                    <video class="videoPost" controls>
+                        <source src="/upload/mario.mp4" type="video/mp4">
+                        Your browser does not support HTML5 video.
+                    </video>
+                    <hr />
+                    <div class="card-body">
+                        <h3>Video Example</h3>
+
+                    </div>
+                </div>
 
 
 
-    </div>
+                <div class="card bg-post mb-2">
+                    <div class="image_blurred_wrapper">
+                        <div class="image_blurred" style="background-image: url('/upload/marioImage.png');"></div>
+                        <img class="card-img-top imgPost" src="/upload/marioImage.png" alt="Card image cap">
+                    </div>
+                    <hr />
+                    <div class="card-body">
+                        <h3>Image Example</h3>
 
-</div>
-</section>
-</div>
+                    </div>
+                </div>
 
-
-
+            </section>
+        </div>
     </main>
     <!-- END MAIn -->
 

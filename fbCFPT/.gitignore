@@ -2,7 +2,6 @@
 !upload/
 
 upload/*
-!upload/mario.mp4
-
-#VSCODE
-.vscode
+!upload/marioVideo.mp4
+!upload/marioSound.mp3
+!upload/marioImage.mp3

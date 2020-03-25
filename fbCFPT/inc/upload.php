@@ -1,6 +1,7 @@
 <?php
 require_once dirname(__FILE__) . "/dbconnect.php";
 require_once dirname(__FILE__) . "/security.inc.php";
+require_once dirname(__FILE__) . "/function.php";
 
 date_default_timezone_set('Europe/Zurich');
 
@@ -21,35 +22,35 @@ if (filter_has_var(INPUT_POST, 'createPost')) {
         array_push($errors, "The post must contain some text");
     }
 
-    if (isset($_FILES['inputImg']) && $_FILES['inputImg']['error'][0] != 4 && empty($errors)) {
+    if (isset($_FILES['inputFile']) && $_FILES['inputFile']['error'][0] != 4 && empty($errors)) {
 
-        $files = $_FILES['inputImg'];
+        $files = $_FILES['inputFile'];
 
-        //70mo
+        //FILE SIZING
         $fileSizeSum = 0;
         $maxSizeAllFiles = 70000000;
 
         for ($i = 0; $i < count($files['name']); $i++) {
-            $folder = $_SERVER["DOCUMENT_ROOT"] . '/upload/';
+            $folder =  dirname(__FILE__) . "/../upload/";
             $maxSizePerFile = 3000000;
 
-            $extensions = array('.png', '.gif', '.jpg', '.jpeg');
-            $imageMimeTypes = array('image/png', 'image/gif', 'image/jpeg');
+            $extensions = array('.png', '.gif', '.jpg', '.jpeg', '.mp4', '.mp3');
+            $mediaMimeTypes = array('image/png', 'image/gif', 'image/jpeg', 'video/mp4', 'audio/mpeg');
 
             $fileSize = filesize($files['tmp_name'][$i]);
             $fileSizeSum += $fileSize;
             $extension = strrchr($files['name'][$i], '.');
-            $imageFileTest = mime_content_type($files['tmp_name'][$i]);
+            $mediaFileTest = mime_content_type($files['tmp_name'][$i]);
             $files['name'][$i] = uniqid() . $extension;
             $fileName = basename($files['name'][$i]);
 
             //Début des vérifications de sécurité...
-            if (!in_array($extension, $extensions) or !in_array($imageFileTest, $imageMimeTypes)) //Si l'extension n'est pas dans le tableau
+            if (!in_array($extension, $extensions) or !in_array($mediaFileTest, $mediaMimeTypes)) //Si l'extension n'est pas dans le tableau
             {
-                array_push($errors, 'Vous devez uploader un fichier de type png, gif, jpg, jpeg, txt ou doc...');
+                array_push($errors, 'Vous devez uploader un fichier de type png, gif, jpg, jpeg, mp3, mp4...');
             }
             if ($fileSize > $maxSizePerFile or $fileSizeSum > $maxSizeAllFiles) {
-                array_push($errors, 'Le(s) fichier(s) est trop grand(s)...');
+                array_push($errors, 'Le fichier est trop grand...');
             }
             if (empty($errors)) //S'il n'y a pas d'erreur, on upload
             {
@@ -59,6 +60,8 @@ if (filter_has_var(INPUT_POST, 'createPost')) {
                 if (!move_uploaded_file($files['tmp_name'][$i], $folder . $fileName)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
                 {
                     array_push($errors, 'Echec de l\'upload !');
+
+                    break;
                 } else {
                     $currentMediaInfo = array(
                         'fileName' => $fileName,
@@ -67,6 +70,11 @@ if (filter_has_var(INPUT_POST, 'createPost')) {
                     array_push($mediaInfo, $currentMediaInfo);
                     $containsMedia = true;
                 }
+            } else {
+                foreach ($mediaInfo as $info) {
+                    unlinkMediaByName($info['fileName']);
+                }
+                break;
             }
         }
     } else {
@@ -100,6 +108,9 @@ if (filter_has_var(INPUT_POST, 'createPost')) {
             header("Location: index.php");
         } catch (Exception $e) {
             EDatabase::rollBack();
+            foreach ($mediaInfo as $info) {
+                unlinkMediaByName($info['fileName']);
+            }
             return $e;
         }
     }
