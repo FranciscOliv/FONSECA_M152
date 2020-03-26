@@ -12,7 +12,7 @@ if (isset($_POST["id"])) {
 
 if (strlen($id) > 0) {
 
-    if (deletePostById($id)) {
+    if (DeletePostById($id)) {
         
         echo '{ "ReturnCode": 0, "Message": "Suppression s\'est déroulé correctement"}';
         exit();

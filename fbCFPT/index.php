@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__) . "/inc/function.php";
 
-$postData =  getAllPost();
+$postData =  GetAllPost();
 
 ?>
 <!doctype html>
@@ -28,6 +28,7 @@ $postData =  getAllPost();
     <!-- NAVBAR test -->
     <?php
     include_once "inc/nav.inc.php";
+    
     ?>
     <!-- END NAVBAR -->
 
@@ -57,14 +58,14 @@ $postData =  getAllPost();
 
                             <?php
                             //CARD MEDIA
-                            $mediaData = getMediaByPostId($post['idPost']);
+                            $mediaData = GetMediaByPostId($post['idPost']);
 
 
                             //MULTIPLE MEDIA POST
                             if (count($mediaData) > 1) {
-                                require "./inc/multiMediaPost.inc.php";
-                            } else {  // SINGLE MEDIA POST
-                                require "./inc/singleMediaPost.inc.php";
+                                ShowMultiMedia($mediaData);
+                            } else {  // SINGLE MEDIA POST                               
+                                ShowSingleMedia($mediaData[0]);
                             } ?>
 
                             <!-- CARD BODY  -->
@@ -76,7 +77,7 @@ $postData =  getAllPost();
                                         <button type="button" class="btn p-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
 
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#">Modifier</a>
+                                            <a class="dropdown-item" href="./modifyPost.php?POSTID=<?= $post['idPost'] ?>">Modifier</a>
                                             <a name="<?= $post['idPost'] ?>" class="dropdown-item btnDeletePost" href="#">Supprimer</a>
                                         </div>
                                     </div>
@@ -121,7 +122,7 @@ $postData =  getAllPost();
                 <!-- POST EXAMPLE -->
                 <div class="card bg-post mb-2">
                     <video class="videoPost" controls>
-                        <source src="/upload/mario.mp4" type="video/mp4">
+                        <source src="/upload/marioVideo.mp4" type="video/mp4">
                         Your browser does not support HTML5 video.
                     </video>
                     <hr />
@@ -165,6 +166,8 @@ $postData =  getAllPost();
         $(".btnDeletePost").click(function() {
             deletePost(event);
         });
+
+
 
 
         function deletePost(e) {
